@@ -1,0 +1,15 @@
+[Unit]
+Description=Airflow scheduler daemon
+After=network.target
+[Service]
+EnvironmentFile=/airflow/config/airflow.env
+User=root
+Group=root
+Type=simple
+ExecStart=/bin/bash -c 'export AIRFLOW_HOME=/airflow; airflow scheduler --pid /airflow/airflow-scheduler.pid'
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+Restart=always
+RestartSec=5s
+[Install]
+WantedBy=multi-user.target

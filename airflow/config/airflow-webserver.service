@@ -1,0 +1,17 @@
+[Unit]
+Description=Airflow webserver daemon
+After=network.target
+[Service]
+EnvironmentFile=/airflow/config/airflow.env
+User=root
+Group=root
+Type=simple
+ExecStart=/bin/bash -c 'export AIRFLOW_HOME=/airflow; airflow webserver --pid /airflow/airflow-webserver.pid'
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+Restart=on-failure
+RestartSec=42s
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
